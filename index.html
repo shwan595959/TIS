@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#080b12" />
+
+  <title>TIS</title>
+
+  <style>
+
+.project-info {
+  margin-bottom: 20px;
+  padding: 18px 22px;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--panel);
+}
+
+.project-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 650;
+  letter-spacing: -0.5px;
+}
+
+.project-description {
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+    :root {
+      color-scheme: dark;
+      --bg: #080b12;
+      --panel: #101621;
+      --line: rgba(255, 255, 255, 0.15);
+      --text: #f4f5f7;
+      --muted: #aeb6c6;
+      --accent: #dfbf8e;
+      --error: #ffb4b4;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    body {
+  margin: 0;
+  min-height: 100vh;
+  background: #080b12;
+  color: var(--text);
+  font-family:
+    -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  isolation: isolate;
+}
+
+/* 콘텐츠 뒤에 고정되는 별 배경 */
+#star-trails {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      padding: 11px 16px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: #182131;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #253148;
+    }
+
+    button:disabled {
+      opacity: 0.5;
+      cursor: wait;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    .table-wrapper:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #17120c;
+      font-weight: 700;
+    }
+
+    .primary:hover {
+      background: #ead0a8;
+    }
+
+    .container {
+      width: min(1080px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+    }
+
+    .brand-mark {
+      width: 11px;
+      height: 11px;
+      flex-shrink: 0;
+      background: var(--accent);
+    }
+
+    header button {
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    main {
+      padding: 36px 0 48px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+    }
+
+    .today-card {
+      padding: 36px;
+      border-top: 2px solid var(--accent);
+    }
+
+    .today-label {
+      margin: 0 0 18px;
+      color: var(--accent);
+      font-size: 11px;
+      letter-spacing: 3px;
+    }
+
+    .today-date {
+      display: block;
+      font-size: clamp(32px, 7vw, 70px);
+      font-weight: 650;
+      line-height: 1.2;
+      letter-spacing: -2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .today-weekday {
+      display: block;
+      margin-top: 12px;
+      color: var(--accent);
+      font-size: 16px;
+      font-weight: 500;
+      letter-spacing: 0;
+    }
+
+    .today-duties {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 30px 0 0;
+      padding-top: 26px;
+      border-top: 1px solid var(--line);
+    }
+
+    .today-duties dt {
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .today-duties dd {
+      margin: 0;
+      font-size: clamp(22px, 4vw, 30px);
+      font-weight: 600;
+      letter-spacing: -1px;
+      overflow-wrap: anywhere;
+    }
+
+    .schedule-section {
+      margin-top: 32px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 19px;
+      letter-spacing: -0.5px;
+    }
+
+    .week-range {
+      color: var(--muted);
+      font-size: 12px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      min-width: 600px;
+      border-collapse: collapse;
+      table-layout: fixed;
+      text-align: center;
+    }
+
+    caption {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    th,
+    td {
+      padding: 23px 10px;
+      border-right: 1px solid var(--line);
+    }
+
+    tr > :last-child {
+      border-right: 0;
+    }
+
+    th {
+      border-bottom: 1px solid var(--line);
+      font-weight: 500;
+    }
+
+    .weekday {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .column-date {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .teacher-cell {
+      height: 82px;
+      font-size: 16px;
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .today-column {
+      background: rgba(223, 191, 142, 0.09);
+      color: var(--accent);
+    }
+
+    th.today-column {
+      box-shadow: inset 0 2px 0 var(--accent);
+    }
+
+    .today-column .column-date {
+      color: var(--accent);
+    }
+
+    .message {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .message:empty {
+      display: none;
+    }
+
+    .message.error {
+      color: var(--error);
+    }
+
+    .admin-panel {
+      margin-top: 32px;
+      padding: 26px;
+    }
+
+    .admin-heading,
+    .dialog-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .edit-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 2fr auto;
+      align-items: end;
+      gap: 14px;
+    }
+
+    label {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: #090e17;
+      color: var(--text);
+    }
+
+    dialog {
+      width: min(420px, calc(100% - 32px));
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 0;
+      background: var(--panel);
+      color: var(--text);
+    }
+
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.75);
+    }
+
+    .login-submit {
+      width: 100%;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 700px) {
+      .today-card {
+        padding: 26px 20px;
+      }
+
+      .today-date {
+        letter-spacing: -1px;
+      }
+
+      .today-duties {
+        gap: 18px;
+      }
+
+      .edit-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .admin-panel {
+        padding: 20px;
+      }
+
+      .brand {
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="star-trails" aria-hidden="true"></canvas>
+
+  <div class="container">
+    <header>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        TIS | 충곽 쌤 추적 서비스
+      </div>
+
+      <button type="button" id="admin-open">
+        마스터컨트롤
+      </button>
+    </header>
+
+    <main>
+    <main>
+
+  <section class="project-info" aria-labelledby="project-title">
+    <h1 class="project-title" id="project-title">
+      TIS | Teacher Investigation Service
+    </h1>
+
+    <p class="project-description">
+      Utilized by Valid Super-KSH-API Service : School Track-Based API by 김수환
+    </p>
+  </section>
+  <section class="panel today-card" aria-label="오늘 담당 선생님">
+
+      <section class="panel today-card" aria-label="오늘 담당 선생님">
+        <p class="today-label">오늘은...</p>
+
+        <time class="today-date" id="today-date"></time>
+
+        <dl class="today-duties">
+          <div>
+            <dt>야자감독</dt>
+            <dd id="today-study">—</dd>
+          </div>
+
+          <div>
+            <dt>기숙사 사감</dt>
+            <dd id="today-dorm">—</dd>
+          </div>
+        </dl>
+      </section>
+
+      <p class="message" id="page-message" role="status"></p>
+
+      <section class="schedule-section" aria-labelledby="study-title">
+        <div class="section-heading">
+          <h2 id="study-title">야자감독</h2>
+          <span class="week-range" id="study-range"></span>
+        </div>
+
+        <div
+          class="panel table-wrapper"
+          role="region"
+          aria-label="야자감독 주간표"
+          tabindex="0"
+        >
+          <table>
+            <caption>이번 주 야자감독</caption>
+            <thead id="study-head"></thead>
+            <tbody id="study-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="schedule-section" aria-labelledby="dorm-title">
+        <div class="section-heading">
+          <h2 id="dorm-title">기숙사 사감</h2>
+          <span class="week-range" id="dorm-range"></span>
+        </div>
+
+        <div
+          class="panel table-wrapper"
+          role="region"
+          aria-label="기숙사 사감 주간표"
+          tabindex="0"
+        >
+          <table>
+            <caption>이번 주 기숙사 사감</caption>
+            <thead id="dorm-head"></thead>
+            <tbody id="dorm-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section
+        class="panel admin-panel"
+        id="admin-panel"
+        aria-labelledby="admin-title"
+        hidden
+      >
+        <div class="admin-heading">
+          <h2 id="admin-title">담당 선생님 수정</h2>
+
+          <button type="button" id="admin-close">
+            종료
+          </button>
+        </div>
+
+        <form id="edit-form">
+          <div class="edit-grid">
+            <label>
+              구분
+              <select id="edit-type">
+                <option value="study">야자감독</option>
+                <option value="dorm">기숙사 사감</option>
+              </select>
+            </label>
+
+            <label>
+              요일
+              <select id="edit-day">
+                <option value="1">월요일</option>
+                <option value="2">화요일</option>
+                <option value="3">수요일</option>
+                <option value="4">목요일</option>
+                <option value="5">금요일</option>
+                <option value="0">일요일</option>
+              </select>
+            </label>
+
+            <label>
+              선생님 이름
+              <input
+                id="edit-name"
+                maxlength="40"
+                autocomplete="off"
+                required
+              />
+            </label>
+
+            <button type="submit" class="primary" id="edit-save">
+              저장
+            </button>
+          </div>
+        </form>
+
+        <p class="message" id="edit-message" role="status"></p>
+      </section>
+
+      <noscript>
+        <p>JavaScript not allowed</p>
+      </noscript>
+    </main>
+  </div>
+
+  <dialog id="login-dialog" aria-labelledby="login-title">
+    <div class="dialog-heading">
+      <h2 id="login-title">마스터컨트롤</h2>
+
+      <button type="button" id="login-close">
+        닫기
+      </button>
+    </div>
+
+    <form id="login-form">
+      <label>
+        Password
+        <input
+          type="password"
+          id="admin-password"
+          autocomplete="off"
+          maxlength="256"
+          required
+        />
+      </label>
+
+      <button
+        type="submit"
+        class="primary login-submit"
+        id="login-submit"
+      >
+        Input
+      </button>
+    </form>
+
+    <p class="message" id="login-message" role="status"></p>
+  </dialog>
+<script>
+(() => {
+  const canvas = document.getElementById("star-trails");
+  const ctx = canvas.getContext("2d");
+
+  if (!ctx) return;
+
+  const reducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  );
+
+  const TAU = Math.PI * 2;
+
+  // 배경 설정
+  const STAR_COUNT = 200;
+  const SPEED = 0.1; // 초당 회전 각도: 높일수록 빨라짐
+  const BRIGHTNESS = 1;
+
+  let width = 0;
+  let height = 0;
+  let stars = [];
+
+  let rotation = 0;
+  let previousTime = 0;
+  let animationId = null;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+
+    // 고해상도 화면에서도 선명하게 표시
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // 궤적 중심을 오른쪽 위에 배치
+    const centerX = width * 0.82;
+    const centerY = height * 0.18;
+
+    const maxRadius = Math.max(
+      Math.hypot(centerX, centerY),
+      Math.hypot(width - centerX, centerY),
+      Math.hypot(centerX, height - centerY),
+      Math.hypot(width - centerX, height - centerY)
+    );
+
+    stars = Array.from({ length: STAR_COUNT }, () => ({
+      radius: 12 + Math.sqrt(Math.random()) * maxRadius,
+      angle: Math.random() * TAU,
+      trail: 0.12 + Math.random() * 0.5,
+      alpha: 0.15 + Math.random() * 0.55,
+      thickness: 0.4 + Math.random() * 0.8,
+      warm: Math.random() > 0.8
+    }));
+
+    draw();
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, width, height);
+
+    const centerX = width * 0.82;
+    const centerY = height * 0.18;
+
+    // 中心付近の淡い青い光
+    const glow = ctx.createRadialGradient(
+      centerX, centerY, 0,
+      centerX, centerY, Math.max(width, height)
+    );
+
+    glow.addColorStop(0, "rgba(36, 57, 88, 0.30)");
+    glow.addColorStop(0.5, "rgba(15, 25, 45, 0.12)");
+    glow.addColorStop(1, "rgba(8, 11, 18, 0)");
+
+    ctx.fillStyle = glow;
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.lineCap = "round";
+
+    for (const star of stars) {
+      const headAngle = star.angle + rotation;
+
+      // 궤적을 나누어 뒤쪽으로 갈수록 흐려지게 표시
+      const segments = 7;
+
+      for (let i = 0; i < segments; i++) {
+        const start =
+          headAngle - star.trail + (star.trail * i / segments);
+
+        const end =
+          headAngle - star.trail +
+          (star.trail * (i + 1) / segments);
+
+        const opacity =
+          star.alpha * BRIGHTNESS * ((i + 1) / segments);
+
+        ctx.strokeStyle = star.warm
+          ? `rgba(223, 191, 142, ${opacity})`
+          : `rgba(190, 214, 248, ${opacity})`;
+
+        ctx.lineWidth = star.thickness;
+
+        ctx.beginPath();
+        ctx.arc(
+          centerX,
+          centerY,
+          star.radius,
+          start,
+          end
+        );
+        ctx.stroke();
+      }
+
+      // 궤적 끝의 별
+      const x = centerX + Math.cos(headAngle) * star.radius;
+      const y = centerY + Math.sin(headAngle) * star.radius;
+
+      ctx.fillStyle =
+        `rgba(235, 242, 255, ${star.alpha * BRIGHTNESS})`;
+
+      ctx.beginPath();
+      ctx.arc(x, y, star.thickness * 0.85, 0, TAU);
+      ctx.fill();
+    }
+
+    // 왼쪽 글자 영역과 화면 하단을 어둡게 유지
+    const shade = ctx.createLinearGradient(0, 0, width, 0);
+    shade.addColorStop(0, "rgba(8, 11, 18, 0.65)");
+    shade.addColorStop(1, "rgba(8, 11, 18, 0.08)");
+
+    ctx.fillStyle = shade;
+    ctx.fillRect(0, 0, width, height);
+
+    const bottomShade = ctx.createLinearGradient(0, 0, 0, height);
+    bottomShade.addColorStop(0, "rgba(8, 11, 18, 0)");
+    bottomShade.addColorStop(1, "rgba(8, 11, 18, 0.55)");
+
+    ctx.fillStyle = bottomShade;
+    ctx.fillRect(0, 0, width, height);
+  }
+
+  function animate(time) {
+    if (!previousTime) previousTime = time;
+
+    // 약 30fps로 제한하여 배경의 연산량 절약
+    const elapsed = time - previousTime;
+
+    if (elapsed >= 1000 / 30) {
+      rotation =
+        (rotation + Math.min(elapsed / 1000, 0.1) * SPEED) % TAU;
+
+      previousTime = time;
+      draw();
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+
+  function updateAnimation() {
+    if (animationId !== null) {
+      cancelAnimationFrame(animationId);
+      animationId = null;
+    }
+
+    previousTime = 0;
+
+    // 모션 감소 설정 또는 다른 탭에서는 애니메이션 정지
+    if (reducedMotion.matches || document.hidden) {
+      draw();
+      return;
+    }
+
+    animationId = requestAnimationFrame(animate);
+  }
+
+  window.addEventListener("resize", resize);
+  document.addEventListener("visibilitychange", updateAnimation);
+  reducedMotion.addEventListener("change", updateAnimation);
+
+  resize();
+  updateAnimation();
+})();
+</script>
+
+  <script type="module">
+    import { createClient } from
+      "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    const SUPABASE_URL = "https://ouputvkdkhwrfblcitkk.supabase.co";
+    const SUPABASE_PUBLIC_KEY = "sb_publishable_BRcgwKr--JnVWMEF0QTIIg_8cUILITc";
+
+    const $ = (id) => document.getElementById(id);
+
+    const DAY_NAMES = ["일", "월", "화", "수", "목", "금", "토"];
+
+    let db;
+    let schedule = new Map();
+
+    let adminPassword = "";
+
+    function setMessage(id, text, isError = false) {
+      $(id).textContent = text;
+      $(id).classList.toggle("error", isError);
+    }
+
+    function itemKey(type, day) {
+      return `${type}:${day}`;
+    }
+
+    function getTeacher(type, day) {
+      return schedule.get(itemKey(type, day))?.teacher_name ?? "—";
+    }
+
+    function getKoreanToday() {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Seoul",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit"
+      }).formatToParts(new Date());
+
+      const values = Object.fromEntries(
+        parts.map((part) => [part.type, part.value])
+      );
+
+      return new Date(Date.UTC(
+        Number(values.year),
+        Number(values.month) - 1,
+        Number(values.day)
+      ));
+    }
+
+    function dateKey(date) {
+      return date.toISOString().slice(0, 10);
+    }
+
+    function shortDate(date) {
+      return `${date.getUTCMonth() + 1}/${date.getUTCDate()}`;
+    }
+
+    function getWeekDates(today) {
+      const weekday = today.getUTCDay();
+      const monday = new Date(today);
+
+      monday.setUTCDate(
+        today.getUTCDate() - ((weekday + 6) % 7)
+      );
+
+      return [0, 1, 2, 3, 4, 6].map((offset) => {
+        const date = new Date(monday);
+        date.setUTCDate(monday.getUTCDate() + offset);
+        return date;
+      });
+    }
+
+    function renderTable(type, dates, todayKey) {
+      const headerRow = document.createElement("tr");
+      const teacherRow = document.createElement("tr");
+
+      for (const date of dates) {
+        const day = date.getUTCDay();
+        const isToday = dateKey(date) === todayKey;
+
+        const th = document.createElement("th");
+        th.scope = "col";
+
+        const dayLabel = document.createElement("span");
+        dayLabel.className = "weekday";
+        dayLabel.textContent = `${DAY_NAMES[day]}요일`;
+
+        const dateLabel = document.createElement("time");
+        dateLabel.className = "column-date";
+        dateLabel.dateTime = dateKey(date);
+        dateLabel.textContent = shortDate(date);
+
+        th.append(dayLabel, dateLabel);
+
+        const td = document.createElement("td");
+        td.className = "teacher-cell";
+        td.textContent = getTeacher(type, day);
+
+        if (isToday) {
+          th.classList.add("today-column");
+          th.setAttribute("aria-current", "date");
+          td.classList.add("today-column");
+        }
+
+        headerRow.appendChild(th);
+        teacherRow.appendChild(td);
+      }
+
+      $(`${type}-head`).replaceChildren(headerRow);
+      $(`${type}-body`).replaceChildren(teacherRow);
+    }
+
+    function render() {
+      const today = getKoreanToday();
+      const todayKey = dateKey(today);
+      const weekday = today.getUTCDay();
+
+      const largeDate = document.createElement("span");
+      largeDate.textContent =
+        `${today.getUTCFullYear()}. ` +
+        `${String(today.getUTCMonth() + 1).padStart(2, "0")}. ` +
+        `${String(today.getUTCDate()).padStart(2, "0")}.`;
+
+      const weekdayLabel = document.createElement("span");
+      weekdayLabel.className = "today-weekday";
+      weekdayLabel.textContent = `${DAY_NAMES[weekday]}요일`;
+
+      $("today-date").dateTime = todayKey;
+      $("today-date").replaceChildren(largeDate, weekdayLabel);
+
+      $("today-study").textContent =
+        weekday === 6 ? "일정 없음" : getTeacher("study", weekday);
+
+      $("today-dorm").textContent =
+        weekday === 6 ? "일정 없음" : getTeacher("dorm", weekday);
+
+      const dates = getWeekDates(today);
+
+      const range =
+        `${dateKey(dates[0]).replaceAll("-", ".")} — ` +
+        `${dateKey(dates[5]).replaceAll("-", ".")}`;
+
+      $("study-range").textContent = range;
+      $("dorm-range").textContent = range;
+
+      renderTable("study", dates, todayKey);
+      renderTable("dorm", dates, todayKey);
+    }
+
+    async function loadSchedule() {
+      const { data, error } = await db
+        .from("duty_schedule")
+        .select("duty_type, day_of_week, teacher_name");
+
+      if (error) throw error;
+
+      schedule = new Map(
+        data.map((item) => [
+          itemKey(item.duty_type, item.day_of_week),
+          item
+        ])
+      );
+
+      render();
+    }
+
+    function fillEditor() {
+      const type = $("edit-type").value;
+      const day = Number($("edit-day").value);
+
+      $("edit-name").value =
+        schedule.get(itemKey(type, day))?.teacher_name ?? "";
+    }
+
+    async function callAdminFunction(body) {
+      const response = await fetch(
+        `${SUPABASE_URL}/functions/v1/edit-duty`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLIC_KEY
+          },
+          body: JSON.stringify(body)
+        }
+      );
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.ok) {
+        throw new Error(
+          result?.error || "Req. Failed: Check Funcs"
+        );
+      }
+
+      return result;
+    }
+
+    $("admin-open").addEventListener("click", () => {
+      if (!db) {
+        setMessage(
+          "page-message",
+          "Not connected to the server",
+          true
+        );
+        return;
+      }
+
+      setMessage("login-message", "");
+      $("login-dialog").showModal();
+      $("admin-password").focus();
+    });
+
+    $("login-close").addEventListener("click", () => {
+      $("login-dialog").close();
+    });
+
+    $("login-dialog").addEventListener("close", () => {
+      $("admin-password").value = "";
+    });
+
+    $("login-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      $("login-submit").disabled = true;
+      setMessage("login-message", "Checking in progress");
+
+      try {
+        const password = $("admin-password").value;
+
+        await callAdminFunction({
+          action: "verify",
+          password
+        });
+
+        await loadSchedule();
+
+        adminPassword = password;
+        fillEditor();
+
+        $("login-dialog").close();
+        $("admin-open").hidden = true;
+        $("admin-panel").hidden = false;
+
+        setMessage("page-message", "");
+        setMessage("edit-message", "");
+
+        $("admin-panel").scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      } catch (error) {
+        setMessage(
+          "login-message",
+          error.message || "Connection Failed",
+          true
+        );
+      } finally {
+        $("login-submit").disabled = false;
+      }
+    });
+
+    function changeSelection() {
+      fillEditor();
+      setMessage("edit-message", "");
+    }
+
+    $("edit-type").addEventListener("change", changeSelection);
+    $("edit-day").addEventListener("change", changeSelection);
+
+    $("edit-form").addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!adminPassword) {
+        setMessage("edit-message", "Invalid Password", true);
+        return;
+      }
+
+      const type = $("edit-type").value;
+      const day = Number($("edit-day").value);
+      const name = $("edit-name").value.trim();
+
+      if (!name) {
+        setMessage("edit-message", "Name", true);
+        return;
+      }
+
+      // 저장 도중 선택값이 바뀌지 않게 합니다.
+      $("edit-save").disabled = true;
+      $("edit-type").disabled = true;
+      $("edit-day").disabled = true;
+      $("edit-name").disabled = true;
+      $("admin-close").disabled = true;
+
+      setMessage("edit-message", "Saving");
+
+      try {
+        const result = await callAdminFunction({
+          action: "update",
+          password: adminPassword,
+          duty_type: type,
+          day_of_week: day,
+          teacher_name: name
+        });
+
+        const item = result.data;
+
+        schedule.set(
+          itemKey(item.duty_type, item.day_of_week),
+          item
+        );
+
+        render();
+        fillEditor();
+        setMessage("edit-message", "Saved.");
+      } catch (error) {
+        setMessage(
+          "edit-message",
+          error.message || "Save Error",
+          true
+        );
+      } finally {
+        $("edit-save").disabled = false;
+        $("edit-type").disabled = false;
+        $("edit-day").disabled = false;
+        $("edit-name").disabled = false;
+        $("admin-close").disabled = false;
+      }
+    });
+
+    $("admin-close").addEventListener("click", () => {
+      adminPassword = "";
+      $("admin-password").value = "";
+      $("admin-panel").hidden = true;
+      $("admin-open").hidden = false;
+      setMessage("edit-message", "");
+    });
+
+    async function init() {
+      render();
+      setMessage("page-message", "Schedule Loading");
+
+      try {
+        if (
+          SUPABASE_URL.includes("본인프로젝트") ||
+          SUPABASE_PUBLIC_KEY.includes("본인의_공개키")
+        ) {
+          throw new Error("Empty Value");
+        }
+
+        db = createClient(
+          SUPABASE_URL,
+          SUPABASE_PUBLIC_KEY
+        );
+
+        await loadSchedule();
+        setMessage("page-message", "");
+      } catch (error) {
+        console.error(error);
+
+        setMessage(
+          "page-message",
+          "Error: Check the Destination",
+          true
+        );
+      }
+    }
+
+    init();
+
+    let lastDate = dateKey(getKoreanToday());
+
+    function checkDate() {
+      const currentDate = dateKey(getKoreanToday());
+
+      if (currentDate !== lastDate) {
+        lastDate = currentDate;
+        render();
+      }
+    }
+
+    setInterval(checkDate, 60_000);
+
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) checkDate();
+    });
+  </script>
+</body>
+</html>
